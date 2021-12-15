@@ -12,6 +12,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        fontFamily: 'Quicksand',
+        appBarTheme: AppBarTheme(
+          textTheme: TextTheme(
+            subtitle1: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'OpenSans'),
+            headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+            bodyText2: TextStyle(
+                fontSize: 20.0,
+                fontFamily: 'OpenSans',
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+        primarySwatch: Colors.purple,
+      ),
+      title: "Personal Expenses",
       home: MyHomePage(),
     );
   }
@@ -23,12 +41,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _usersTransactions = [
-    Transaction(
-        id: "t1", title: "New Shoes", amount: 70.50, date: DateTime.now()),
-    Transaction(
-        id: "t2", title: "Groceries", amount: 30.26, date: DateTime.now()),
-  ];
+  final List<Transaction> _usersTransactions = [];
   void _addNewTransaction(String title, double amount) {
     final newTransaction = Transaction(
         id: DateTime.now().toString(),
@@ -57,7 +70,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Flutter App"),
+        title: Text(
+          "Personal Expenses",
+        ),
         actions: [
           IconButton(
             onPressed: () => _startAddNewTransaction(context),
@@ -71,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             Card(
               child: Container(
-                  color: Colors.blue,
+                  color: Theme.of(context).primaryColor,
                   width: double.infinity,
                   child: Text("CHART")),
               elevation: 5,
