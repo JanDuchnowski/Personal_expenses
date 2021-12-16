@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'widgets/transaction_list.dart';
 import 'widgets/new_transaction.dart';
+import 'widgets/chart.dart';
 import 'models/transaction.dart';
-
-import 'widgets/new_transaction.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,17 +14,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'Quicksand',
         appBarTheme: AppBarTheme(
-          textTheme: TextTheme(
-            subtitle1: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'OpenSans'),
-            headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-            bodyText2: TextStyle(
-                fontSize: 20.0,
-                fontFamily: 'OpenSans',
-                fontWeight: FontWeight.bold),
-          ),
+          textTheme: ThemeData.light().textTheme.copyWith(
+                subtitle1: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
         ),
         primarySwatch: Colors.purple,
       ),
@@ -42,12 +37,21 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _usersTransactions = [];
-  void _addNewTransaction(String title, double amount) {
+
+  List<Transaction> get _recentTransactions {
+    return _usersTransactions.where((transaction) {
+      return transaction.date.isAfter(DateTime.now().subtract(
+        Duration(days: 7),
+      ));
+    }).toList();
+  }
+
+  void _addNewTransaction(String title, double amount, DateTime chosenTime) {
     final newTransaction = Transaction(
         id: DateTime.now().toString(),
         title: title,
         amount: amount,
-        date: DateTime.now());
+        date: chosenTime);
 
     setState(() {
       _usersTransactions.add(newTransaction);
@@ -64,6 +68,14 @@ class _MyHomePageState extends State<MyHomePage> {
             behavior: HitTestBehavior.opaque,
           );
         });
+  }
+
+  void _deleteTransaction(String id) {
+    setState(() {
+      _usersTransactions.removeWhere((element) {
+        return element.id == id;
+      });
+    });
   }
 
   @override
@@ -84,14 +96,8 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Card(
-              child: Container(
-                  color: Theme.of(context).primaryColor,
-                  width: double.infinity,
-                  child: Text("CHART")),
-              elevation: 5,
-            ),
-            TransactionList(_usersTransactions),
+            Chart(_recentTransactions),
+            TransactionList(_usersTransactions, _deleteTransaction),
           ],
         ),
       ),
