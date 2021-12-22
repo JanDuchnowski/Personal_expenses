@@ -53,63 +53,70 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      child: Container(
-        padding: EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            TextField(
-              decoration: InputDecoration(labelText: "Title"),
-              onSubmitted: (_) => _submitData(),
-              controller: _titleControler,
-            ),
-            TextField(
-              decoration: InputDecoration(labelText: "Amount"),
-              keyboardType: TextInputType.number,
-              onSubmitted: (_) =>
-                  _submitData(), // We gen an argument but we don't use it
-              controller: _amountControler,
-            ),
-            Container(
-              height: 70,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      _selectedDate == null
-                          ? "No Date Chosen"
-                          : DateFormat.yMd().format(_selectedDate),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.purple[300])),
-                      onPressed: _presentDatePicker,
+    return SingleChildScrollView(
+      child: Card(
+        elevation: 5,
+        child: Container(
+          padding: EdgeInsets.only(
+            top: 10.0,
+            left: 10.0,
+            right: 10.0,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              TextField(
+                decoration: InputDecoration(labelText: "Title"),
+                onSubmitted: (_) => _submitData(),
+                controller: _titleControler,
+              ),
+              TextField(
+                decoration: InputDecoration(labelText: "Amount"),
+                keyboardType: TextInputType.number,
+                onSubmitted: (_) =>
+                    _submitData(), // We gen an argument but we don't use it
+                controller: _amountControler,
+              ),
+              Container(
+                height: 70,
+                child: Row(
+                  children: [
+                    Expanded(
                       child: Text(
-                        "Choose Date",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        _selectedDate == null
+                            ? "No Date Chosen"
+                            : DateFormat.yMd().format(_selectedDate),
                       ),
                     ),
-                  )
-                ],
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.purple[300])),
+                        onPressed: _presentDatePicker,
+                        child: Text(
+                          "Choose Date",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-            ElevatedButton(
-              onPressed: _submitData,
-              child: Text(
-                "Add Transaction",
-                style: TextStyle(fontWeight: FontWeight.bold),
+              ElevatedButton(
+                onPressed: _submitData,
+                child: Text(
+                  "Add Transaction",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(Colors.purple[300])),
               ),
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all(Colors.purple[300])),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
