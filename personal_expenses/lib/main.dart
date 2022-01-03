@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.purple,
       ),
       title: "Personal Expenses",
+      //test
       home: MyHomePage(),
     );
   }
